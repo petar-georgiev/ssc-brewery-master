@@ -13,10 +13,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 
 @Configuration
 @EnableWebSecurity
@@ -44,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests(authorize -> authorize
+                        .antMatchers("/h2-console/**").permitAll()
                         .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
                         .antMatchers("/beers/find", "/beers**", "/beers/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
@@ -53,6 +56,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().and()
                 .httpBasic();
+
+            //http console config
+             http.headers().frameOptions().sameOrigin();
+    }
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
