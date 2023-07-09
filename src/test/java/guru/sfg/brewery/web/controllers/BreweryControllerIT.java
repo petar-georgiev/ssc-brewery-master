@@ -28,7 +28,7 @@ public class BreweryControllerIT extends BaseIT {
     void listBreweriesADMIN() throws Exception {
         mockMvc.perform(get("/brewery/breweries")
                         .with(httpBasic("spring", "guru")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test

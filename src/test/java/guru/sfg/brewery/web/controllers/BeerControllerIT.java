@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-public class BeerControllerIT extends BaseIT{
+public class BeerControllerIT extends BaseIT {
 
     @Test
     void initCreationFormWithSpring() throws Exception {
@@ -24,14 +24,15 @@ public class BeerControllerIT extends BaseIT{
     }
 
     @Test
-    void initCreationFormWithScott() throws Exception{
+    void initCreationFormWithScott() throws Exception {
         mockMvc.perform(get("/beers/new").with(httpBasic("scott", "tiger")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createBeer"))
                 .andExpect(model().attributeExists("beer"));
     }
+
     @Test
-    void initCreationForm() throws Exception{
+    void initCreationForm() throws Exception {
         mockMvc.perform(get("/beers/new").with(httpBasic("user", "password")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createBeer"))
@@ -39,7 +40,7 @@ public class BeerControllerIT extends BaseIT{
     }
 
     @Test
-    void findBeers() throws Exception{
+    void findBeers() throws Exception {
         mockMvc.perform(get("/beers/find"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/findBeers"))
@@ -47,10 +48,17 @@ public class BeerControllerIT extends BaseIT{
     }
 
     @Test
-    void findBeersWithAnonymous() throws Exception{
+    void findBeersWithAnonymous() throws Exception {
         mockMvc.perform(get("/beers/find").with(anonymous()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/findBeers"))
                 .andExpect(model().attributeExists("beer"));
+    }
+
+    @Test
+    void findBeerFormADMIN() throws Exception {
+        mockMvc.perform(get("/beers").param("beerName", "")
+                        .with(httpBasic("spring", "guru")))
+                        .andExpect(status().isOk());
     }
 }

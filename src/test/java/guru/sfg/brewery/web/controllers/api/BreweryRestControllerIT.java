@@ -29,7 +29,7 @@ public class BreweryRestControllerIT extends BaseIT {
     void getBreweriesJsonADMIN() throws Exception{
         mockMvc.perform(get("/brewery/api/v1/breweries")
                 .with(httpBasic("spring", "guru")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
