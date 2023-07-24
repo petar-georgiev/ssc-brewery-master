@@ -27,6 +27,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -107,6 +108,7 @@ class CustomerControllerTest {
         verifyZeroInteractions(customerRepository);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Test
     void processCreationForm() throws Exception{
         when(customerRepository.save(ArgumentMatchers.any())).thenReturn(Customer.builder().id(uuid).build());
